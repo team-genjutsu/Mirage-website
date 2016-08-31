@@ -5,4 +5,7 @@ npm-debug.log
 
 # IntelliJ
 *.iml
+*.zip
 /.idea
+
+/miragejs_keys
