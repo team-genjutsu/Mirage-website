@@ -47,6 +47,7 @@ function animationListener(canvas, img, animeObj, animeEle, context, reqAnim, ar
       }
     });
 
+  console.log(channel);
     channel.send(canvasObj);
   }, false)
 }
