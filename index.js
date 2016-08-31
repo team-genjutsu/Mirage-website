@@ -114,9 +114,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
             document.getElementById('mainApp').classList.remove('hidden');
             //begin streaming!//
             navigator.getMedia({
-                video: true,
-                audio: false
-              }).then(stream => {
+              video: true,
+              audio: false
+            }).then(stream => {
 
                 //make initiate event happen automatically when streaming begins
                 socket.emit('initiate', JSON.stringify({
@@ -217,6 +217,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     console.log('data channel opened');
                   };
 
+                  console.log('which channel: ' + channel);
                   //after creation of data channel switch button visilibity
                   document.getElementById('connect').disabled = true;
                   document.getElementById('disconnect').disabled = false;
@@ -301,7 +302,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
                     if (dataObj.hasOwnProperty('localEmoji')) {
                       if (dataObj.localEmoji) {
-                        //remote display bounce animation!
+                        console.log('has local emoji')
+                          //remote display bounce animation!
                         let emoImg = new Image();
                         emoImg.src = dataObj.currentImg;
 
@@ -311,7 +313,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
                         currentAnimation = temp;
 
                       } else if (!dataObj.localEmoji) {
-                        //local display bounce animation!
+                        console.log('not local emoji')
+                          //local display bounce animation!
                         let emoImg = new Image();
                         emoImg.src = dataObj.currentImg;
 
@@ -329,7 +332,10 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     console.log('not initiator data channel start', event.channel);
                     dataChannel = event.channel;
                     onDataChannelCreated(dataChannel);
+                    animationListener(peerCanvas, emoImg, anime, currAnime, peerContext, raf, [velocity, angularVelocity], dataChannel, false, getCursorPosition); //remote
+
                   }
+
                 }
 
                 //misc webRTC helper functions
@@ -370,7 +376,6 @@ document.addEventListener("DOMContentLoaded", (event) => {
                   peerContext = peerMedia.context;
 
                   animationListener(peerCanvas, emoImg, anime, currAnime, peerContext, raf, [velocity, angularVelocity], dataChannel, false, getCursorPosition); //remote
-
                 } ///end on stream added event///
 
                 function handleRemoteStreamRemoved(event) {
@@ -390,9 +395,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
                   console.log('Sending answer to peer.');
                   peerConn.createAnswer().then(
                     setLocalAndSendMessage).catch(err => {
-                      console.log('create offer error: ' + err);
-                    }
-                  );
+                    console.log('create offer error: ' + err);
+                  });
                 }
 
                 function setLocalAndSendMessage(sessionDescription) {
